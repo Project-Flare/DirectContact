@@ -9,6 +9,6 @@ namespace DirectContactShared.Messages
 {
     internal class ServerAcknowledgeIdentity : MessageWrapper
     {
-        public override MessageType type => MessageType.ServerAcknowledgeIdentity;
+        public MessageType type => MessageType.ServerAcknowledgeIdentity;
     }
 }

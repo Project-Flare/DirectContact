@@ -10,7 +10,7 @@ namespace DirectContactShared.Messages
 {
     internal class ServerIntroduce : MessageWrapper
     {
-        public override MessageType type => MessageType.ServerIntroduce;
+        public MessageType type => MessageType.ServerIntroduce;
 
         public string serverName;
         public string sessionKey;

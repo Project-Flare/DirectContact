@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DirectContactServer
 {
-    public abstract class MessageWrapper
+    public interface MessageWrapper
     {
-        public abstract MessageType type { get; }
+        public MessageType type { get; }
     }
 }

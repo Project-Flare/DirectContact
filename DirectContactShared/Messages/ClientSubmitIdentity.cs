@@ -10,7 +10,7 @@ namespace DirectContactShared.Messages
 {
     internal class ClientSubmitIdentity : MessageWrapper
     {
-        public override MessageType type => MessageType.ClientSubmitIdentity;
+        public MessageType type => MessageType.ClientSubmitIdentity;
 
         public string userName;
         public ECDiffieHellmanPublicKey publicKey;

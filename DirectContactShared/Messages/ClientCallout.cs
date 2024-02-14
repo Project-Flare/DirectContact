@@ -10,6 +10,6 @@ namespace DirectContactShared
     // 
     public class ClientCallout : MessageWrapper
     {
-        public override MessageType type => MessageType.ClientCallout;
+        public MessageType type => MessageType.ClientCallout;
     }
 }
