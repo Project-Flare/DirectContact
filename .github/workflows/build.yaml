@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          path: src
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
         with:
@@ -42,16 +44,16 @@ jobs:
           dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
-        run: dotnet restore src/DirectContactClient/DirectContactClient.csproj
+        run: dotnet restore src/DirectContact/DirectContactClient/DirectContactClient/DirectContactClient.csproj
 
       - name: Build MAUI Android
-        run: dotnet build src/DirectContactClient/DirectContactClient.csproj -c Release -f net6.0-android --no-restore
+        run: dotnet build src/DirectContact/DirectContactClient/DirectContactClient.csproj -c Release -f net6.0-android --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
           name: android-ci-build
-          path: src/DirectContactClient/bin/Release/net6.0-android/*Signed.a*
+          path: src/DirectContact/DirectContactClient/bin/Release/net6.0-android/*Signed.a*
 
   build-windows:
     runs-on: windows-2022
@@ -59,6 +61,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          path: src
 
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
@@ -76,16 +80,16 @@ jobs:
           dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
-        run: dotnet restore src/DirectContactClient/DirectContactClient.csproj
+        run: dotnet restore src/DirectContact/DirectContactClient/DirectContactClient.csproj
 
       - name: Build MAUI Windows
-        run: msbuild src/DirectContactClient/DirectContactClient.csproj -r -p:Configuration=Release -p:RestorePackages=false -p:TargetFramework=net6.0-windows10.0.19041 /p:GenerateAppxPackageOnBuild=true
+        run: msbuild src/DirectContact/DirectContactClient/DirectContactClient.csproj -r -p:Configuration=Release -p:RestorePackages=false -p:TargetFramework=net6.0-windows10.0.19041 /p:GenerateAppxPackageOnBuild=true
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
           name: windows-ci-build
-          path: src/DirectContactClient/bin/Release/net6.0-windows*/**/DirectContact*.msix
+          path: src/DirectContact/DirectContactClient/bin/Release/net6.0-windows*/**/DirectContact*.msix
 
   build-ios:
     runs-on: macos-11
@@ -93,6 +97,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          path: src
 
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
@@ -106,13 +112,13 @@ jobs:
           dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
-        run: dotnet restore src/DirectContactClient/DirectContactClient.csproj
+        run: dotnet restore src/DirectContact/DirectContactClient/DirectContactClient.csproj
 
       - name: Build MAUI iOS
-        run: dotnet build src/DirectContactClient/DirectContactClient.csproj -c Release -f net6.0-ios --no-restore
+        run: dotnet build src/DirectContact/DirectContactClient/DirectContactClient.csproj -c Release -f net6.0-ios --no-restore
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
           name: ios-ci-build
-          path: src/DirectContactClient/bin/Release/net6.0-ios/**/*.app/
+          path: src/DirectContact/DirectContactClient/bin/Release/net6.0-ios/**/*.app/
