@@ -97,22 +97,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup .NET 8
+      - name: Setup .NET 7
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 7.0.x
 
       - name: Install MAUI Workload
         run: dotnet workload install maui --ignore-failed-sources
+
+      - name: Set XCode Version
+        shell: bash
+        run: |
+          sudo xcode-select -s "/Applications/Xcode_14.1.app"
+          echo "MD_APPLE_SDK_ROOT=/Applications/Xcode_14.1.app" >> $GITHUB_ENV
+        if: ${{ matrix.os == 'macos-latest' }}
 
       - name: Restore Dependencies
         run: dotnet restore DirectContactClient/DirectContactClient.csproj
 
       - name: Build MAUI iOS
-        run: dotnet build DirectContactClient/DirectContactClient.csproj -c Release -f net8.0-ios --no-restore
+        run: dotnet build DirectContactClient/DirectContactClient.csproj -c Release -f net7.0-ios --no-restore
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
           name: ios-ci-build
-          path: DirectContactClient/bin/Release/net8.0-ios/**/*.app/
+          path: DirectContactClient/bin/Release/net7.0-ios/**/*.app/
