@@ -82,7 +82,9 @@ jobs:
         run: dotnet restore DirectContactClient/DirectContactClient.csproj
 
       - name: Build MAUI Windows
-        run: msbuild DirectContactClient/DirectContactClient.csproj -r -p:Configuration=Release -p:RestorePackages=false -p:TargetFramework=net8.0-windows10.0.19041 /p:GenerateAppxPackageOnBuild=true
+        run: |
+            msbuild DirectContactClient/DirectContactClient.csproj -r -p:Configuration=Release -p:RestorePackages=false -p:TargetFramework=net8.0-windows10.0.19041 /p:GenerateAppxPackageOnBuild=true
+            dotnet publish -f net8.0-windows10.0.19041.0 -c Release -p:RuntimeIdentifierOverride=win10-x64
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v2.3.1
