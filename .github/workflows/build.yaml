@@ -91,7 +91,7 @@ jobs:
           path: DirectContactClient/bin/Release/net8.0-windows*/**/DirectContact*.msix
 
   build-ios:
-    runs-on: macos-11
+    runs-on: macos-12
     name: iOS Build
     steps:
       - name: Checkout
@@ -102,10 +102,8 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Install MAUI Workloads
-        run: |
-          dotnet workload install ios --ignore-failed-sources
-          dotnet workload install maui --ignore-failed-sources
+      - name: Install MAUI Workload
+        run: dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
         run: dotnet restore DirectContactClient/DirectContactClient.csproj
