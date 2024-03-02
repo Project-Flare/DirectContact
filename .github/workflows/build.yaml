@@ -24,7 +24,7 @@ jobs:
     name: Android Build
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
@@ -43,17 +43,19 @@ jobs:
           dotnet workload install maui --ignore-failed-sources
 
       - name: Restore Dependencies
-        run: dotnet restore ./DirectContactClient/DirectContactClient/DirectContactClient.csproj
+        run: dotnet restore
 
       - name: Build MAUI Android
-        run: dotnet build ./DirectContactClient/DirectContactClient.csproj -c Release -f net6.0-android --no-restore
+        run: dotnet build DirectContactClient/DirectContactClient.csproj -c Release -f net6.0-android --no-restore
 
       - name: Upload Android Artifact
         uses: actions/upload-artifact@v2.3.1
         with:
           name: android-ci-build
-          path: ./DirectContactClient/bin/Release/net6.0-android/*Signed.a*
-
+          path: |
+            ./**/*.aab
+            ./**/*.apk
+  
   build-windows:
     runs-on: windows-2022
     name: Windows Build
