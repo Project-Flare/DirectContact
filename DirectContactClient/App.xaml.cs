@@ -1,4 +1,6 @@
-﻿namespace DirectContactClient
+﻿using DirectContactClient.Views;
+
+namespace DirectContactClient
 {
     public partial class App : Application
     {
@@ -6,7 +8,8 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            //MainPage = new AppShell();
+            MainPage = new LoginView();
         }
     }
 }

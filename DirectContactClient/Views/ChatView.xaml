@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DirectContactClient.Views.ChatView"
+             Title="ChatView">
+    <Grid>
+        <Grid RowDefinitions="80, *, 90">
+            <Grid RowDefinitions="60, *"
+              BackgroundColor="#2B5B58">
+                <Grid Margin="20,10,0,0">
+                    <Label Text="Users"
+                   TextColor="#FFFFFF"
+                   FontFamily="InterExtraBold"
+                   FontSize="32"
+                   AnchorY="0"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1"
+                  BackgroundColor="#4B8C69">
+                <ScrollView x:Name="scrollView" HorizontalScrollBarVisibility="Never">
+                    <VerticalStackLayout 
+                        VerticalOptions="End">
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#2B5B58" CornerRadius="9"
+               HorizontalOptions="Start" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label x:Name="dynamicTextLabel" LineBreakMode="WordWrap" Text="heeladsadfssdfsfgdhdfghdfqwerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+
+                        <Frame Margin="15,10,15,0" Padding="5" BackgroundColor="#415532" CornerRadius="9"
+               HorizontalOptions="End" VerticalOptions="Start" MaximumWidthRequest="300"
+                               HasShadow="False"
+                               BorderColor="Transparent">
+                            <Label LineBreakMode="WordWrap" Text="hewerggdsfgsdfgsd"
+                                   FontFamily="Inter"
+                                   FontSize="18"/>
+                        </Frame>
+                    </VerticalStackLayout>
+                </ScrollView>
+
+            </Grid>
+            <Grid Grid.Row="2"
+                  BackgroundColor="#4B8C69">
+                <Grid Opacity=".7"
+                      Padding="20,0,20,20"
+                      VerticalOptions="End">
+                    <RoundRectangle Fill="#8A8888"
+                                        HeightRequest="40"
+                                        CornerRadius="12"/>
+                    <Entry Placeholder="message"
+                                   FontFamily="InterExtraBold"
+                                   FontSize="18"
+                                   VerticalOptions="CenterAndExpand"
+                                   Margin="10,0,10,0"
+                   PlaceholderColor="#FFFFFF"
+                   Opacity=".7"
+                   TextColor="#FFFFFF"/>
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

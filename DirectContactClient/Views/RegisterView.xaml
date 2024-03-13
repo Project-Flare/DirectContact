@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DirectContactClient.Views.RegisterView"
+             Title="RegisterView">
+    <Grid BackgroundColor="#4B8C69">
+        <AbsoluteLayout>
+            <Ellipse WidthRequest="280" HeightRequest="280"
+             Fill="#3FA970"
+             AbsoluteLayout.LayoutBounds="0.27, 0.24, 0, 0"
+             AbsoluteLayout.LayoutFlags="PositionProportional"/>
+            <Ellipse WidthRequest="640" HeightRequest="640"
+             Fill="#40604E"
+             AbsoluteLayout.LayoutBounds="0.91, 0.89, 0, 0"
+             AbsoluteLayout.LayoutFlags="PositionProportional"/>
+            <Ellipse WidthRequest="490" HeightRequest="490"
+             Fill="#415532"
+             AbsoluteLayout.LayoutBounds=" .825, .95, 0, 0"
+             AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        </AbsoluteLayout>
+        <Grid RowDefinitions="150, *">
+            <Grid Grid.Row="0">
+                <Grid WidthRequest="365"
+                      VerticalOptions="End"
+                      Margin="0,0,0,5">
+                    <Label Text="Register"
+                   FontSize="32"
+                   TextColor="#FFFFFF"
+                   FontFamily="InterExtraBold"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid
+                      HeightRequest="365"
+                    WidthRequest="365"
+                    MaximumWidthRequest="800"
+                    VerticalOptions="Start"
+                    Margin="20,0,20,0"
+                      Opacity=".7">
+                    <RoundRectangle
+                        Fill="#FFFFFF"
+                        CornerRadius="30,30,30,30"/>
+                    <VerticalStackLayout Margin="15,20,15,0">
+                        <RoundRectangle Fill="White"/>
+                        <Grid Margin="0,0,0,0">
+                            <RoundRectangle Fill="#8A8888"
+                                        HeightRequest="55"
+                                        CornerRadius="12">
+                            </RoundRectangle>
+                            <Entry Placeholder="username"
+                                   FontFamily="InterExtraBold"
+                                   FontSize="18"
+                                   VerticalOptions="CenterAndExpand"
+                                   Margin="10,0,0,0"/>
+                        </Grid>
+                        <Grid Margin="0, 25,0,0">
+                            <RoundRectangle Fill="#8A8888"
+                                        HeightRequest="55"
+                                        CornerRadius="12">
+                            </RoundRectangle>
+                            <Entry Placeholder="password"
+                                   FontFamily="InterExtraBold"
+                                   FontSize="18"
+                                   VerticalOptions="CenterAndExpand"
+                                   Margin="10,0,0,0"/>
+                        </Grid>
+                        <Grid Margin="0, 25,0,0">
+                            <RoundRectangle Fill="#8A8888"
+                                        HeightRequest="55"
+                                        CornerRadius="12">
+                            </RoundRectangle>
+                            <Entry FontFamily="InterExtraBold"
+                                   IsPassword="True"
+                                   Placeholder="repeat password"
+                                   FontSize="18"
+                                   VerticalOptions="CenterAndExpand"
+                                   Margin="10,0,0,0"/>
+                        </Grid>
+                        <Label Text="password entropy"
+                               TextColor="#000000"/>
+                        <Button Text="Register"
+                                FontFamily="InterExtraBold"
+                                FontSize="18"
+                                BackgroundColor="#373636"
+                                HeightRequest="35"
+                                Margin="0,53,0,0"
+                                Padding="0"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
