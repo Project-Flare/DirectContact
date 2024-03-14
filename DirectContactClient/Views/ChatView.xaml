@@ -177,23 +177,37 @@
 
             </Grid>
             <Grid Grid.Row="2"
-                  BackgroundColor="#4B8C69">
-                <Grid Opacity=".7"
-                      Padding="20,0,20,20"
-                      VerticalOptions="End">
-                    <RoundRectangle Fill="#8A8888"
-                                        HeightRequest="40"
-                                        CornerRadius="12"/>
-                    <Entry Placeholder="message"
+                  BackgroundColor="#4B8C69"
+                  ColumnDefinitions="*,.15*">
+                <Grid Grid.Column="0"
+                      Opacity=".7"
+                      Padding="20,0,10,20"
+                      VerticalOptions="End"
+                      >
+                    <Frame Padding="0" 
+                           BackgroundColor="#8A8888"
+                           BorderColor="Transparent" 
+                           CornerRadius="12"
+                           HeightRequest="45">
+                        <Entry Placeholder="message"
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
                                    VerticalOptions="CenterAndExpand"
                                    Margin="10,0,10,0"
-                   PlaceholderColor="#FFFFFF"
-                   Opacity=".7"
-                   TextColor="#FFFFFF"/>
+                                   PlaceholderColor="#FFFFFF"
+                                   Opacity=".7"
+                                   TextColor="#FFFFFF"/>
+                    </Frame>
                 </Grid>
+                <Grid Grid.Column="1"
+                      Padding="0,10,0,10">
+                    <Button BackgroundColor="Transparent"
+                            FontFamily="InterExtraBold"
+                            FontSize="30"
+                            HorizontalOptions="Start"
+                            Text="->"/>
 
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

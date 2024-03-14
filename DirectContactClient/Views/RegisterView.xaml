@@ -40,55 +40,61 @@
                     <RoundRectangle
                         Fill="#FFFFFF"
                         CornerRadius="30,30,30,30"/>
-                    <VerticalStackLayout Margin="15,20,15,0">
+                    <Grid Margin="15,20,15,0" RowDefinitions="*,*,*,*,*">
                         <RoundRectangle Fill="White"/>
-                        <Grid Margin="0,0,0,0">
-                            <RoundRectangle Fill="#8A8888"
-                                        HeightRequest="55"
-                                        CornerRadius="12">
-                            </RoundRectangle>
-                            <Entry Placeholder="username"
+                        <Grid Margin="0,0,0,0" Grid.Row="0" HeightRequest="55">
+                            <Frame Padding="0"
+                                   BackgroundColor="#8A8888"
+                                   BorderColor="Transparent"
+                                   CornerRadius="12">
+                                <Entry Placeholder="username"
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
                                    VerticalOptions="CenterAndExpand"
-                                   Margin="10,0,0,0"/>
+                                   Margin="10,0,10,0"/>
+                            </Frame>
                         </Grid>
-                        <Grid Margin="0, 25,0,0">
-                            <RoundRectangle Fill="#8A8888"
-                                        HeightRequest="55"
-                                        CornerRadius="12">
-                            </RoundRectangle>
-                            <Entry Placeholder="password"
+                        <Grid Margin="0,0,0,0" Grid.Row="1" HeightRequest="55">
+                            <Frame Padding="0"
+                                   BackgroundColor="#8A8888"
+                                   BorderColor="Transparent"
+                                   CornerRadius="12">
+                                <Entry Placeholder="password"
+                                       IsPassword="True"
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
                                    VerticalOptions="CenterAndExpand"
-                                   Margin="10,0,0,0"/>
+                                   Margin="10,0,10,0"/>
+                            </Frame>
                         </Grid>
-                        <Grid Margin="0, 25,0,0">
-                            <RoundRectangle Fill="#8A8888"
-                                        HeightRequest="55"
-                                        CornerRadius="12">
-                            </RoundRectangle>
-                            <Entry FontFamily="InterExtraBold"
+                        <Grid Margin="0,0,0,0" Grid.Row="2" HeightRequest="55">
+                            <Frame Padding="0"
+                                   BackgroundColor="#8A8888"
+                                   BorderColor="Transparent"
+                                   CornerRadius="12">
+                                <Entry FontFamily="InterExtraBold"
                                    IsPassword="True"
                                    Placeholder="repeat password"
                                    FontSize="18"
                                    VerticalOptions="CenterAndExpand"
-                                   Margin="10,0,0,0"/>
+                                   Margin="10,0,10,0"/>
+                            </Frame>
                         </Grid>
-                        <Label Text="password entropy"
+                        <Grid Grid.Row="3" Margin="0,7,0,0">
+                            <Label x:Name="RegisterErrorInfo" 
+                                Text="password entropy reserved/missmatch"
                                TextColor="#000000"/>
-                        <Button Text="Register"
+                        </Grid>
+                        <Grid Grid.Row="4" HeightRequest="35" Margin="0,0,0,40">
+                            <Button Text="Register"
                                 FontFamily="InterExtraBold"
                                 FontSize="18"
                                 BackgroundColor="#373636"
-                                HeightRequest="35"
-                                Margin="0,53,0,0"
+                                Margin="0,0,0,0"
                                 Padding="0"/>
-                    </VerticalStackLayout>
+                        </Grid>
+                    </Grid>
                 </Grid>
-
-
             </Grid>
         </Grid>
     </Grid>

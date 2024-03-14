@@ -13,6 +13,9 @@ namespace DirectContactClient
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Inter-Regular.ttf", "Inter");
+                    fonts.AddFont("Inter-Bold.ttf", "InterBold");
+                    fonts.AddFont("Inter-ExtraBold.ttf", "InterExtraBold");
                 });
 
 #if DEBUG
