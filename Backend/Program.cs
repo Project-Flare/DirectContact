@@ -1,6 +1,8 @@
-﻿using System.Net.WebSockets;
+﻿using System.Net.Sockets;
+using System.Net.WebSockets;
 using Flare;
 using Google.Protobuf;
+using static Flare.RegisterResponse;
 using static Flare.ServerMessage;
 namespace Backend
 {
@@ -9,7 +11,7 @@ namespace Backend
         static async Task Main(string[] args)
         {
             const string ServerUrl = "wss://ws.project-flare.net/";
-            const int MaxServerResponseTimeSeconds = 5;
+            const int MaxServerResponseTimeSeconds = 3000;
 
             var serverUri = new Uri(ServerUrl);
             var cts = new CancellationTokenSource();
@@ -25,7 +27,7 @@ namespace Backend
                     // Get "Hello" message from the server
                     byte[] buffer = new byte[1024];
                     WebSocketReceiveResult serverResponse = await webSocket.ReceiveAsync(buffer, cts.Token);
-                    ServerMessage response = Parser.ParseFrom(buffer, 0, serverResponse.Count);
+                    ServerMessage response = ServerMessage.Parser.ParseFrom(buffer, 0, serverResponse.Count);
 
                     if (response.ServerMessageTypeCase != ServerMessageTypeOneofCase.Hello)
                     {
@@ -36,8 +38,8 @@ namespace Backend
 
                     // Attempt user registration
                     Registration userRegistration = new Registration();
-                    
-                    // Max 10 times for setting username
+
+                    /*// Max 10 times for setting username
                     for (int times = 0; times < 10; times++)
                     {
                         Console.Write("Username: ");
@@ -70,8 +72,12 @@ namespace Backend
                         {
                             Console.WriteLine("Password objected: " + password + '\n' + userRegistration.EvaluatePassword(password));
                         }
-                    }
+                    }*/
 
+                    /*userRegistration.TrySetPassword("=B>t<|&a9<\\{+Vbj^B<#k(_~$G-*XMJ");
+                    userRegistration.TrySetUsername("manfredas_lamsargis_2003");*/
+                    userRegistration.TrySetPassword("v6SeNVRZw_OX8T-ye5~0/l=03^lX*CW");
+                    userRegistration.TrySetUsername("manfredas_lamsargis_2021");
                     RegisterRequest? request = userRegistration.FormRegistrationRequest();
                     if (request is null)
                     {
@@ -79,26 +85,42 @@ namespace Backend
                     }
                     else
                     {
-                        // Send request for user registration
-                        byte[] bytes = request.ToByteArray();
-                        await webSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cts.Token);
+                        ClientMessage mesg = new ClientMessage();
+                        mesg.RegisterRequest = request;
 
+                        // Send request for user registration
+                        byte[] bytes = mesg.ToByteArray();
+                        Console.WriteLine(webSocket.State);
+                        cts.CancelAfter(TimeSpan.FromSeconds(80));
+                        await webSocket.SendAsync(bytes, WebSocketMessageType.Binary, true, cts.Token);
+                        bytes = new byte[1024];
                         WebSocketReceiveResult registerResponse = await webSocket.ReceiveAsync(bytes, cts.Token);
-                        ServerMessage regResponse = Parser.ParseFrom(bytes, 0, serverResponse.Count);
-                        if (!response.ServerMessageTypeCase.Equals(ServerMessageTypeOneofCase.RegisterResponse))
+                        ServerMessage regResponse = ServerMessage.Parser.ParseFrom(bytes, 0, registerResponse.Count);
+                        if (regResponse.ServerMessageTypeCase == ServerMessageTypeOneofCase.RegisterResponse)
                         {
-                            Console.WriteLine("Registration failed...");
-                        }
-                        else
-                        {
-                            Console.WriteLine(userRegistration.Username + " your account is registered to Direct Contact!");
+                            RegisterResponse registrationResponse = new RegisterResponse(regResponse.RegisterResponse);
+                            //RegisterResponse.Types.DenyReason DenyReason
+                            RegisterResponse.RegisterResultOneofCase reasons = registrationResponse.RegisterResultCase;
+                            switch(reasons)
+                            {
+                                case RegisterResultOneofCase.None:
+                                    Console.WriteLine("Failed to receive session key");
+                                    break;
+                                case RegisterResultOneofCase.DenyReason:
+                                    Console.WriteLine("Registration was denied because " + registrationResponse.DenyReason);
+                                    break;
+                                case RegisterResultOneofCase.SessionKey:
+                                    Console.WriteLine("Given session key is: " + registrationResponse.SessionKey);
+                                    break;
+                            }
                         }
                     }
+                    Console.Write(webSocket.State);
 
                 }
-                catch (Exception ex)
+                catch (OperationCanceledException ex)
                 {
-                    Console.WriteLine("Service terminated because of:\n" + ex.Message);
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
