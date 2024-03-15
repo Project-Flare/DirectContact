@@ -22,18 +22,18 @@ namespace Backend
         Excellent
     }
 
-    internal class Registration
+    public class Registration
     {
-        public string Username { get => username; }
-        public string Password { get => password; }
+        public string Username { get => _username; }
+        public string Password { get => _password; }
         
-        private string username;
-        private string password;
+        private string _username;
+        private string _password;
 
         public Registration()
         {
-            username = string.Empty;
-            password = string.Empty;
+            _username = string.Empty;
+            _password = string.Empty;
         }
 
         public bool TrySetPassword(string password)
@@ -48,10 +48,10 @@ namespace Backend
                 case PasswordStrength.Weak:
                     return false;
                 case PasswordStrength.Good:
-                    this.password = password;
+                    this._password = password;
                     return true;
                 case PasswordStrength.Excellent:
-                    this.password = password;
+                    this._password = password;
                     return true;
                 default:
                     return false;
@@ -89,7 +89,7 @@ namespace Backend
             if (!UsernameValid(username))
                 return false;
 
-            this.username = username;
+            this._username = username;
             return true;
         }
 
@@ -123,14 +123,14 @@ namespace Backend
         public RegisterRequest? FormRegistrationRequest()
         {
             // Don't send request if username or password is not set
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(_username) || string.IsNullOrEmpty(_password))
                 return null;
 
             // Form register request protobuf
             RegisterRequest request = new RegisterRequest
             {
-                Username = username,
-                Password = password
+                Username = _username,
+                Password = _password
             };
 
             return request;

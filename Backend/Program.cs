@@ -1,5 +1,4 @@
-﻿using System.Net.Sockets;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 using Flare;
 using Google.Protobuf;
 using static Flare.RegisterResponse;
@@ -11,18 +10,19 @@ namespace Backend
         static async Task Main(string[] args)
         {
             const string ServerUrl = "wss://ws.project-flare.net/";
-            const int MaxServerResponseTimeSeconds = 3000;
+            //const int MaxServerResponseTimeSeconds = 3000;
 
-            var serverUri = new Uri(ServerUrl);
-            var cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(MaxServerResponseTimeSeconds));
-
-            using (var webSocket = new ClientWebSocket())
+            /*using (var webSocket = new ClientWebSocket())
             {
                 try
                 {
+                    var serverUri = new Uri(ServerUrl);
+                    var cts = new CancellationTokenSource();
+                    cts.CancelAfter(TimeSpan.FromSeconds(MaxServerResponseTimeSeconds));
+
                     // Wait for connection to the server
                     await webSocket.ConnectAsync(serverUri, cts.Token);
+
 
                     // Get "Hello" message from the server
                     byte[] buffer = new byte[1024];
@@ -39,7 +39,7 @@ namespace Backend
                     // Attempt user registration
                     Registration userRegistration = new Registration();
 
-                    /*// Max 10 times for setting username
+                    *//*// Max 10 times for setting username
                     for (int times = 0; times < 10; times++)
                     {
                         Console.Write("Username: ");
@@ -75,7 +75,7 @@ namespace Backend
                     }*/
 
                     /*userRegistration.TrySetPassword("=B>t<|&a9<\\{+Vbj^B<#k(_~$G-*XMJ");
-                    userRegistration.TrySetUsername("manfredas_lamsargis_2003");*/
+                    userRegistration.TrySetUsername("manfredas_lamsargis_2003");*//*
                     userRegistration.TrySetPassword("v6SeNVRZw_OX8T-ye5~0/l=03^lX*CW");
                     userRegistration.TrySetUsername("manfredas_lamsargis_2021");
                     RegisterRequest? request = userRegistration.FormRegistrationRequest();
@@ -122,6 +122,15 @@ namespace Backend
                 {
                     Console.WriteLine(ex.Message);
                 }
+            }*/
+
+            using (var client = new Client())
+            {
+                client.ServerUrl = ServerUrl;
+                await client.ConnectToServer();
+                Console.WriteLine("Connected to the server: " + client.IsConnected);
+                await client.DisconnectFromServer();
+                Console.WriteLine("Disconnected from the server " + client.IsConnected);
             }
         }
     }
