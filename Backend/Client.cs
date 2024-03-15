@@ -84,9 +84,6 @@ namespace Backend
 
         public async Task<ServerRegisterResponse> RegisterToServer(UserRegistration registration)
         {
-            if (registration is null)
-                return ServerRegisterResponse.FormingRegisterRequestFailed;
-
             if (!registration.Valid)
                 return ServerRegisterResponse.FormingRegisterRequestFailed;
 
@@ -103,11 +100,11 @@ namespace Backend
             await _ws.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
 
             // Get servers response
-            const int Offset = 0;
-            const int ByteCount = 1024;
-            buffer = new byte[ByteCount];
+            const int OFFSET = 0;
+            const int BYTECOUNT = 1024;
+            buffer = new byte[BYTECOUNT];
             WebSocketReceiveResult response = await _ws.ReceiveAsync(buffer, CancellationToken.None);
-            ServerMessage serverMessage = ServerMessage.Parser.ParseFrom(buffer, Offset, response.Count);
+            ServerMessage serverMessage = ServerMessage.Parser.ParseFrom(buffer, OFFSET, response.Count);
 
             if (serverMessage.ServerMessageTypeCase != ServerMessageTypeOneofCase.RegisterResponse)
                 return ServerRegisterResponse.RegisterRequestSendingFailed;

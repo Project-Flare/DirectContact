@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package flare;
+
+import "server_hello.proto";
+import "challenge_issuance.proto";
+import "register_response.proto";
+import "auth_response.proto";
+import "user_list_response.proto";
+
+message ServerMessage {
+    oneof server_message_type {
+        flare.ServerHello hello = 1;
+        flare.ChallengeIssuance challenge_issuance = 2;
+        flare.RegisterResponse register_response = 3;
+        flare.AuthResponse auth_response = 4;
+        flare.UserListResponse user_list_response = 5;
+    }
+}

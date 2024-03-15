@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package flare;
+
+message RegisterResponse {
+    enum DenyReason {
+        USERNAME_TAKEN = 0;
+        USERNAME_INVALID_SYMBOLS = 1;
+        USERNAME_INVALID_LENGTH = 2;
+        
+        PASSWORD_BLANK = 3;
+        PASSWORD_WEAK = 4;
+        UNKNOWN = 5;
+    }
+    oneof register_result {
+        string session_key = 1;
+        DenyReason deny_reason = 2;
+    }
+}

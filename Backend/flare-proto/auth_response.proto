@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package flare;
+
+message AuthResponse {
+    enum DenyReason {
+        USERNAME_INVALID = 0;
+        PASSWORD_INVALID = 1;
+        UNKNOWN = 2;
+    }
+    oneof auth_result {
+        string session_key = 1;
+        DenyReason deny_reason = 2;
+    }
+}

@@ -24,8 +24,8 @@ namespace Backend
                 }
 
                 // Form new user registration
-                const string USERNAME = "jelabanu_ostakorov_99";
-                const string PASSWORD = "n6Ct4C{!\\\"H2_{[{A\"/w2RkQz?8`i4}@";
+                const string USERNAME = "jelabanu_ostakorov84_99";
+                const string PASSWORD = "n6Ct4C{!\\\"H--_{[{A\"/w2RkQz?8`i4}@";
 
                 UserRegistration registration = new UserRegistration();
 
