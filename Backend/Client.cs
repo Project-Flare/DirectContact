@@ -1,20 +1,30 @@
 ﻿using Flare;
+using Google.Protobuf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Flare.RegisterResponse;
 using static Flare.ServerMessage;
 
 namespace Backend
 {
     public enum ServerRegisterResponse
     {
+        FormingRegisterRequestFailed,
+        RegisterRequestSendingFailed,
+        SessionKeyIssueFailed,
+        SessionKeyIssueSuccessful,
         UsernameIsTaken,
         UsernameIsInvalid,
-        PasswordIsInvalid,
-        Unknown
+        UsernameInvalidLength,
+        PasswordIsBlank,
+        PasswordIsWeak,
+        Unknown,
     }
 
     // use new client object withing using brackets
@@ -22,7 +32,7 @@ namespace Backend
     {
         private ClientWebSocket _ws;
         private bool _connected;
-        public bool IsConnected 
+        public bool ConnectedToServer 
         { 
             get => _connected; 
         }
@@ -68,15 +78,70 @@ namespace Backend
 
         public async Task DisconnectFromServer()
         {
-            // Sends close frame
-            //await _ws.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
-            //_connected = _ws.State == WebSocketState.Closed;
-            throw new NotImplementedException();
+            await _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+            _connected = false;
         }
 
-        public ServerRegisterResponse RegisterToServer(Registration registration)
+        public async Task<ServerRegisterResponse> RegisterToServer(UserRegistration registration)
         {
-            throw new NotImplementedException();
+            if (registration is null)
+                return ServerRegisterResponse.FormingRegisterRequestFailed;
+
+            if (!registration.Valid)
+                return ServerRegisterResponse.FormingRegisterRequestFailed;
+
+            RegisterRequest? requestForm = registration.FormRegistrationRequest();
+
+            // Failed to form register request protobuf
+            if (requestForm is null)
+                return ServerRegisterResponse.FormingRegisterRequestFailed;
+
+            // Send user registration request to server
+            ClientMessage clientMessage = new ClientMessage();
+            clientMessage.RegisterRequest = requestForm;
+            byte[] buffer = clientMessage.ToByteArray();
+            await _ws.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
+
+            // Get servers response
+            const int Offset = 0;
+            const int ByteCount = 1024;
+            buffer = new byte[ByteCount];
+            WebSocketReceiveResult response = await _ws.ReceiveAsync(buffer, CancellationToken.None);
+            ServerMessage serverMessage = ServerMessage.Parser.ParseFrom(buffer, Offset, response.Count);
+
+            if (serverMessage.ServerMessageTypeCase != ServerMessageTypeOneofCase.RegisterResponse)
+                return ServerRegisterResponse.RegisterRequestSendingFailed;
+
+            RegisterResponse registerResponse = serverMessage.RegisterResponse;
+            RegisterResultOneofCase cases = registerResponse.RegisterResultCase;
+
+            switch (cases)
+            {
+                case RegisterResultOneofCase.None:
+                    return ServerRegisterResponse.SessionKeyIssueFailed;
+                case RegisterResultOneofCase.SessionKey:
+                    return ServerRegisterResponse.SessionKeyIssueSuccessful;
+                case RegisterResultOneofCase.DenyReason:
+                    switch(registerResponse.DenyReason)
+                    {
+                        case Types.DenyReason.UsernameTaken:
+                            return ServerRegisterResponse.UsernameIsTaken;
+                        case Types.DenyReason.UsernameInvalidSymbols:
+                            return ServerRegisterResponse.UsernameIsInvalid;
+                        case Types.DenyReason.UsernameInvalidLength:
+                            return ServerRegisterResponse.UsernameInvalidLength;
+                        case Types.DenyReason.PasswordBlank:
+                            return ServerRegisterResponse.PasswordIsBlank;
+                        case Types.DenyReason.PasswordWeak:
+                            return ServerRegisterResponse.PasswordIsWeak;
+                        case Types.DenyReason.Unknown:
+                            return ServerRegisterResponse.Unknown;
+                        default:
+                            return ServerRegisterResponse.Unknown;
+                    }
+                default:
+                    return ServerRegisterResponse.Unknown;
+            }
         }
 
         public void Dispose()
