@@ -10,8 +10,8 @@ namespace DirectContactClient
 
             //MainPage = new AppShell();
             //MainPage = new LoginView();
-            MainPage = new RegisterView();
-            MainPage = new ChatView();
+            //MainPage = new RegisterView();
+            MainPage = new MainView();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DirectContactClient.ViewModel;
+using DirectContactClient.Views;
+using Microsoft.Extensions.Logging;
 
 namespace DirectContactClient
 {
@@ -18,8 +20,11 @@ namespace DirectContactClient
                     fonts.AddFont("Inter-ExtraBold.ttf", "InterExtraBold");
                 });
 
+            builder.Services.AddSingleton<MainView>();
+            builder.Services.AddSingleton<MainViewModel>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

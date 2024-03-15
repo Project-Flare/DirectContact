@@ -2,7 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DirectContactClient.Views.MainView"
-             Title="MainView">
+             Title="MainView"
+             xmlns:viewmodel="clr-namespace:DirectContactClient.ViewModel"
+             xmlns:model="clr-namespace:DirectContactClient.Model"
+             x:DataType="viewmodel:MainViewModel">
     <Grid>
         <Grid RowDefinitions="140, *">
             <Grid RowDefinitions="60, *"
@@ -15,52 +18,34 @@
                 </Grid>
                 <Grid Grid.Row="1"
                       Margin="20,0,20,15"
-                  Opacity=".7"
+                  Opacity="1"
                   VerticalOptions="End">
-                    <RoundRectangle Fill="#8A8888"
-                                        HeightRequest="40"
-                                        CornerRadius="12"/>
-                    <Entry Placeholder="search"
+                    <Frame Padding="0" BackgroundColor="#8A8888" CornerRadius="12" HeightRequest="43" BorderColor="Transparent">
+                        <Entry Placeholder="search"
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
-                                   VerticalOptions="CenterAndExpand"
-                                   Margin="10,0,10,0"
-                   PlaceholderColor="#FFFFFF"
-                   Opacity=".7"
-                   TextColor="#FFFFFF"/>
+                                   VerticalOptions="Center"
+                                   Margin="10,0,10,0"/>
+                    </Frame>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="1"
-                  BackgroundColor="#4B8C69">
-                <ScrollView >
-                    <VerticalStackLayout>
+            <CollectionView Grid.Row="1" BackgroundColor="#4B8C69"
+                            ItemsSource="{Binding Users}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type model:User}">
                         <Grid HeightRequest="70"
-                              BackgroundColor="#D9D9D9"
-                              Opacity="0.7">
-                            <Label Text="user1"
-                                   Margin="20,0,0,0"
-                                   VerticalOptions="Center"
-                                   FontFamily="InterExtraBold"
-                                   FontSize="20"/>
+                                  Opacity=".7"
+                                  BackgroundColor="#8A8888">
+                            <Label Text="{Binding userName}"
+                                       FontSize="20"
+                                       FontFamily="InterExtraBold"
+                                       VerticalOptions="Center"
+                                       Margin="20,0,0,0"/>
                         </Grid>
-                        <Grid HeightRequest="70"
-                              BackgroundColor="#8A8888"
-                              Opacity="0.7">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer/>
-                            </Grid.GestureRecognizers>
-                            <Label Text="user1"
-                                   Margin="20,0,0,0"
-                                   VerticalOptions="Center"
-                                   FontFamily="InterExtraBold"
-                                   FontSize="20"/>
-                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-                    </VerticalStackLayout>
-                </ScrollView>
-
-            </Grid>
         </Grid>
-
     </Grid>
 </ContentPage>
