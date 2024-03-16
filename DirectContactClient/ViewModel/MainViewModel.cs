@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using DirectContactClient.Model;
 using System.Collections.ObjectModel;
 using System;
+using System.IO;
 
 namespace DirectContactClient.ViewModel
 {
@@ -10,25 +11,27 @@ namespace DirectContactClient.ViewModel
     {
         public MainViewModel()
         {
-            Users = new ObservableCollection<User>();
+            Mycontacts = new ObservableCollection<MyContact>();
             Read();
         }
 
         [ObservableProperty]
-        ObservableCollection<User> users;
+        ObservableCollection<MyContact> mycontacts;
 
         void Read()
         {
-            /*using(StreamReader reader = new StreamReader(@"users.txt"))
+            // for demonstration purposes only.
+            /*if(!File.Exists(@"NEWusers.txt"))
             {
-                /*string ln;
-                while((ln = reader.ReadLine()) != null)
-                {
-                    Items.Add(new User(ln));
-                }*/
-            //}
-            Users.Add(new User("sw"));
-            Users.Add(new User("dp"));
+                File.Create(@"NEWusers.txt");
+            }    
+            string[] lines = File.ReadAllLines(@"NEWusers.txt");
+            foreach (string line in lines)
+            {
+                Mycontacts.Add(new MyContact(line));
+            }*/
+            Mycontacts.Add(new MyContact("sw"));
+            Mycontacts.Add(new MyContact("dp"));
         }
     }
 }

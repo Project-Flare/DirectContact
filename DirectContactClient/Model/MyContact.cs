@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DirectContactClient.Model;
-//User for MainView users
-public class User
+// Contact for MainView users
+public class MyContact
 {
     public string userName { get; set; }
 
-    public User(string userName)
+    public MyContact(string userName)
     {
         this.userName = userName;
     }

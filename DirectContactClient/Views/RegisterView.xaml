@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DirectContactClient.Views.RegisterView"
-             Title="RegisterView">
+             Title="RegisterView"
+             xmlns:control="clr-namespace:DirectContactClient.Control">
     <Grid BackgroundColor="#4B8C69">
         <AbsoluteLayout>
             <Ellipse WidthRequest="280" HeightRequest="280"
@@ -19,7 +20,23 @@
              AbsoluteLayout.LayoutFlags="PositionProportional"/>
         </AbsoluteLayout>
         <Grid RowDefinitions="150, *">
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Swiped="GoBack_Clicked" Direction="Right"/>
+            </Grid.GestureRecognizers>
             <Grid Grid.Row="0">
+                <Grid WidthRequest="365" 
+                    VerticalOptions="Start"
+                      Margin="0,20,0,0">
+                    <Label Text="go back"
+                           FontFamily="InterExtraBold"
+                           FontSize="14"
+                           TextColor="#FFFFFF"
+                           >
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="GoBack_Clicked"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
                 <Grid WidthRequest="365"
                       VerticalOptions="End"
                       Margin="0,0,0,5">
@@ -47,11 +64,12 @@
                                    BackgroundColor="#8A8888"
                                    BorderColor="Transparent"
                                    CornerRadius="12">
-                                <Entry Placeholder="username"
+                                <control:CustomEntry Placeholder="username"
+                                       x:Name="username"
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
                                    VerticalOptions="CenterAndExpand"
-                                   Margin="10,0,10,0"/>
+                                   Margin="5,0,5,0"/>
                             </Frame>
                         </Grid>
                         <Grid Margin="0,0,0,0" Grid.Row="1" HeightRequest="55">
@@ -59,12 +77,13 @@
                                    BackgroundColor="#8A8888"
                                    BorderColor="Transparent"
                                    CornerRadius="12">
-                                <Entry Placeholder="password"
+                                <control:CustomEntry Placeholder="password"
+                                       x:Name="password1"
                                        IsPassword="True"
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
                                    VerticalOptions="CenterAndExpand"
-                                   Margin="10,0,10,0"/>
+                                   Margin="5,0,5,0"/>
                             </Frame>
                         </Grid>
                         <Grid Margin="0,0,0,0" Grid.Row="2" HeightRequest="55">
@@ -72,21 +91,25 @@
                                    BackgroundColor="#8A8888"
                                    BorderColor="Transparent"
                                    CornerRadius="12">
-                                <Entry FontFamily="InterExtraBold"
+                                <control:CustomEntry FontFamily="InterExtraBold"
+                                       x:Name="password2"
                                    IsPassword="True"
                                    Placeholder="repeat password"
                                    FontSize="18"
                                    VerticalOptions="CenterAndExpand"
-                                   Margin="10,0,10,0"/>
+                                   Margin="5,0,5,0"/>
                             </Frame>
                         </Grid>
                         <Grid Grid.Row="3" Margin="0,7,0,0">
                             <Label x:Name="RegisterErrorInfo" 
                                 Text="password entropy reserved/missmatch"
+                                   FontFamily="InterExtraBold"
                                TextColor="#000000"/>
                         </Grid>
                         <Grid Grid.Row="4" HeightRequest="35" Margin="0,0,0,40">
                             <Button Text="Register"
+                                    x:Name="registerButton"
+                                    Clicked="Register_Clicked"
                                 FontFamily="InterExtraBold"
                                 FontSize="18"
                                 BackgroundColor="#373636"

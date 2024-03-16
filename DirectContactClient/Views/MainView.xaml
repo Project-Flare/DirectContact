@@ -5,7 +5,8 @@
              Title="MainView"
              xmlns:viewmodel="clr-namespace:DirectContactClient.ViewModel"
              xmlns:model="clr-namespace:DirectContactClient.Model"
-             x:DataType="viewmodel:MainViewModel">
+             x:DataType="viewmodel:MainViewModel"
+             xmlns:control="clr-namespace:DirectContactClient.Control">
     <Grid>
         <Grid RowDefinitions="140, *">
             <Grid RowDefinitions="60, *"
@@ -21,18 +22,18 @@
                   Opacity="1"
                   VerticalOptions="End">
                     <Frame Padding="0" BackgroundColor="#8A8888" CornerRadius="12" HeightRequest="43" BorderColor="Transparent">
-                        <Entry Placeholder="search"
+                        <control:CustomEntry Placeholder="search"
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
                                    VerticalOptions="Center"
-                                   Margin="10,0,10,0"/>
+                                   Margin="5,0,5,0"/>
                     </Frame>
                 </Grid>
             </Grid>
             <CollectionView Grid.Row="1" BackgroundColor="#4B8C69"
-                            ItemsSource="{Binding Users}">
+                            ItemsSource="{Binding Mycontacts}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type model:User}">
+                    <DataTemplate x:DataType="{x:Type model:MyContact}">
                         <Grid HeightRequest="70"
                                   Opacity=".7"
                                   BackgroundColor="#8A8888">

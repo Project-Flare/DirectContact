@@ -1,6 +1,9 @@
 ﻿using DirectContactClient.ViewModel;
 using DirectContactClient.Views;
+using DirectContactClient.Control;
 using Microsoft.Extensions.Logging;
+using DirectContactClient.Platforms;
+using DirectContactClient.Platforms.Android;
 
 namespace DirectContactClient
 {
@@ -26,6 +29,13 @@ namespace DirectContactClient
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            Microsoft.Maui.Handlers.ElementHandler.ElementMapper.AppendToMapping("Classic", (handler, view) =>
+            {
+                if (view is CustomEntry)
+                {
+                    CustomEntryMapper.Map(handler, view);
+                }
+            });
 
             return builder.Build();
         }
