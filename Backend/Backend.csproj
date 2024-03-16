@@ -20,4 +20,9 @@
     <ItemGroup>
 	    <Protobuf Include=".\flare-proto\*.proto" AdditionalImportDirs=".\flare-proto" />
     </ItemGroup>
+    <ItemGroup>
+      <Protobuf Remove="flare-proto\challenge_verdict.proto" />
+      <Protobuf Remove="flare-proto\login_request.proto" />
+      <Protobuf Remove="flare-proto\login_response.proto" />
+    </ItemGroup>
 </Project>

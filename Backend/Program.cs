@@ -3,6 +3,7 @@ using Flare;
 using Google.Protobuf;
 using static Flare.RegisterResponse;
 using static Flare.ServerMessage;
+ 
 namespace Backend
 {
     internal class Program
@@ -15,6 +16,10 @@ namespace Backend
                 // Specify server url
                 client.ServerUrl = "wss://ws.project-flare.net/";
 
+                // Specify the longest possible time you want to wait for the service
+                // So if the response from the server is longer than 20 seconds, System.Threading.Tasks.TaskCanceledException is thrown
+                client.CancelProcessAfterSeconds = 20;
+
                 await client.ConnectToServer();
 
                 if (!client.ConnectedToServer)
@@ -23,9 +28,23 @@ namespace Backend
                     return;
                 }
 
-                // Form new user registration
-                const string USERNAME = "jelabanu_ostakorov84_99";
-                const string PASSWORD = "n6Ct4C{!\\\"H--_{[{A\"/w2RkQz?8`i4}@";
+                // User credentials
+                const string USERNAME = "airidas_vengrauskas_2008";
+                const string PASSWORD = "n6Ct4C{!\\\"H9--_{[{A\"/w2RkQz?8`i4}@";
+
+
+                //////////////////////// LOG IN TO SERVER
+                /*client.Credentials = new ClientCredentials(USERNAME, PASSWORD);
+                Console.WriteLine(client.Credentials.ToString());
+
+                AuthenticationResponse authResponse = await client.LoginToServer();
+
+                if (authResponse.Equals(AuthenticationResponse.ClientAuthSuccess))
+                    Console.WriteLine("Login to clients account is successful: " + client.SessionKey);
+                else
+                    Console.WriteLine("Login to clients account failed because: " + authResponse);*/
+
+                //////////////////////// REGISTER TO SERVER
 
                 UserRegistration registration = new UserRegistration();
 
@@ -53,13 +72,13 @@ namespace Backend
                     return;
                 }
 
-                ServerRegisterResponse serverResponse = await client.RegisterToServer(registration);
+                RegistrationResponse serverResponse = await client.RegisterToServer(registration);
 
-                if (serverResponse.Equals(ServerRegisterResponse.SessionKeyIssueSuccessful))
+                if (serverResponse.Equals(RegistrationResponse.SessionKeyIssueSuccessful))
                 {
                     Console.WriteLine("User registration is successful");
                 }
-                else if (serverResponse.Equals(ServerRegisterResponse.SessionKeyIssueFailed))
+                else if (serverResponse.Equals(RegistrationResponse.SessionKeyIssueFailed))
                 {
                     Console.WriteLine("Session key issue failed");
                 }
@@ -68,7 +87,6 @@ namespace Backend
                     Console.WriteLine("Failed to register new user because " + serverResponse);
                 }
 
-                // TODO: not implemented normally
                 await client.DisconnectFromServer();
 
                 if (!client.ConnectedToServer)
