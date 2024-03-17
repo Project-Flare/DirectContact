@@ -11,12 +11,12 @@ namespace DirectContactClient.ViewModel
     {
         public MainViewModel()
         {
-            Mycontacts = new ObservableCollection<MyContact>();
+            Mycontacts = new ObservableCollection<ListContact>();
             Read();
         }
 
         [ObservableProperty]
-        ObservableCollection<MyContact> mycontacts;
+        ObservableCollection<ListContact> mycontacts;
 
         void Read()
         {
@@ -30,8 +30,8 @@ namespace DirectContactClient.ViewModel
             {
                 Mycontacts.Add(new MyContact(line));
             }*/
-            Mycontacts.Add(new MyContact("sw"));
-            Mycontacts.Add(new MyContact("dp"));
+            Mycontacts.Add(new ListContact("sw"));
+            Mycontacts.Add(new ListContact("dp"));
         }
     }
 }

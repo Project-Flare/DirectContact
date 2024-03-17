@@ -11,6 +11,7 @@ namespace DirectContactClient
             Routing.RegisterRoute(nameof(RegisterView), typeof(RegisterView));
             Routing.RegisterRoute(nameof(MainView), typeof(MainView));
             Routing.RegisterRoute(nameof(ChatView), typeof(ChatView));
+            Routing.RegisterRoute(nameof(ExploreView), typeof(ExploreView));
         }
     }
 }

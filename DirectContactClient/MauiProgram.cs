@@ -4,6 +4,7 @@ using DirectContactClient.Control;
 using Microsoft.Extensions.Logging;
 using DirectContactClient.Platforms;
 using DirectContactClient.Platforms.Android;
+using CommunityToolkit.Maui;
 
 namespace DirectContactClient
 {
@@ -14,6 +15,7 @@ namespace DirectContactClient
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -25,6 +27,9 @@ namespace DirectContactClient
 
             builder.Services.AddSingleton<MainView>();
             builder.Services.AddSingleton<MainViewModel>();
+
+            builder.Services.AddSingleton<ExploreView>();
+            builder.Services.AddSingleton<ExploreViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

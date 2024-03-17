@@ -2,11 +2,55 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DirectContactClient.Views.ExploreView"
-             Title="ExploreView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="ExploreView"
+             xmlns:control="clr-namespace:DirectContactClient.Control"
+             xmlns:viewmodel="clr-namespace:DirectContactClient.ViewModel"
+             xmlns:model="clr-namespace:DirectContactClient.Model"
+             x:DataType="viewmodel:ExploreViewModel">
+    <Grid>
+        <Grid RowDefinitions="140, *">
+            <Grid RowDefinitions="60, *"
+              BackgroundColor="#2B5B58">
+                <Grid>
+                    <Grid>
+                        <Label Text="Explore other"
+                   TextColor="#FFFFFF"
+                   FontFamily="InterExtraBold"
+                   FontSize="32"
+                   Margin="20,10,0,0"/>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1"
+                  Margin="20,0,20,15"
+                  Opacity="1"
+                  VerticalOptions="End">
+                    <Frame Padding="0" BackgroundColor="#8A8888" CornerRadius="12" HeightRequest="43" BorderColor="Transparent">
+                        <control:CustomEntry Placeholder="search"
+                                   FontFamily="InterExtraBold"
+                                   FontSize="18"
+                                   VerticalOptions="Center"
+                                   ClearButtonVisibility="WhileEditing"
+                                   Margin="5,0,5,0"/>
+                    </Frame>
+                </Grid>
+            </Grid>
+            <CollectionView Grid.Row="1" BackgroundColor="#4B8C69"
+                            ItemsSource="{Binding Availablecontacts}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type model:ListContact}">
+                        <Grid HeightRequest="70"
+                                  Opacity=".7"
+                                  BackgroundColor="#8A8888">
+                            <Label Text="{Binding userName}"
+                                       FontSize="20"
+                                       FontFamily="InterExtraBold"
+                                       VerticalOptions="Center"
+                                       Margin="20,0,0,0"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+    </Grid>
 </ContentPage>

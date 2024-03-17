@@ -6,19 +6,51 @@
              xmlns:viewmodel="clr-namespace:DirectContactClient.ViewModel"
              xmlns:model="clr-namespace:DirectContactClient.Model"
              x:DataType="viewmodel:MainViewModel"
-             xmlns:control="clr-namespace:DirectContactClient.Control">
+             xmlns:control="clr-namespace:DirectContactClient.Control"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <Grid>
         <Grid RowDefinitions="140, *">
             <Grid RowDefinitions="60, *"
               BackgroundColor="#2B5B58">
-                <Grid Margin="20,10,0,0">
-                    <Label Text="Users"
+                <Grid ColumnDefinitions=".3* ,.7*">
+                    <Grid Grid.Column="0">
+                        <Label Text="Users"
                    TextColor="#FFFFFF"
                    FontFamily="InterExtraBold"
-                   FontSize="32"/>
+                   FontSize="32"
+                   Margin="20,10,0,0"/>
+                    </Grid>
+                    <Grid Grid.Column="1"
+                          ColumnDefinitions=".7*, .2*">
+                        <Grid Grid.Column="0" VerticalOptions="Center" HorizontalOptions="End">
+                            <ImageButton Source="settings.png"
+                                         Margin="15"
+                                         Padding="0"
+                                         HeightRequest="30"
+                                         WidthRequest="30">
+                                <ImageButton.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="White"/>
+                                </ImageButton.Behaviors>
+                            </ImageButton>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Label Text="+"
+                                   FontFamily="InterBold"
+                                   TextColor="White"
+                                   FontSize="46"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   Padding="0,0,0,0"
+                                   Margin="0,-10,0,0">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="AddContacts_Clicked"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Grid>
                 </Grid>
                 <Grid Grid.Row="1"
-                      Margin="20,0,20,15"
+                  Margin="20,0,20,15"
                   Opacity="1"
                   VerticalOptions="End">
                     <Frame Padding="0" BackgroundColor="#8A8888" CornerRadius="12" HeightRequest="43" BorderColor="Transparent">
@@ -26,6 +58,7 @@
                                    FontFamily="InterExtraBold"
                                    FontSize="18"
                                    VerticalOptions="Center"
+                                   ClearButtonVisibility="WhileEditing"
                                    Margin="5,0,5,0"/>
                     </Frame>
                 </Grid>
@@ -33,7 +66,7 @@
             <CollectionView Grid.Row="1" BackgroundColor="#4B8C69"
                             ItemsSource="{Binding Mycontacts}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type model:MyContact}">
+                    <DataTemplate x:DataType="{x:Type model:ListContact}">
                         <Grid HeightRequest="70"
                                   Opacity=".7"
                                   BackgroundColor="#8A8888">
