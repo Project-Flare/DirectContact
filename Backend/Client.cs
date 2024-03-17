@@ -18,11 +18,26 @@ namespace Backend
             ServerDenyReasonPasswordIsBlank,
             ServerDenyReasonPasswordIsWeak,
             ServerDenyReasonUnknown,
+            ServerDenyInterpretationUnknown,
             NewUserRegistrationSucceeded,
-            UnknownErrorOccurred
+            NewUserRegistrationFailed
         }
 
-        private sealed class UserCredentials
+        public enum LoginResponse
+        {
+            UserCredentialsNotSet,
+            FailedToGetServerLoginResponse,
+            FailedToGetServerResponse,
+            ServerLoginResponseInvalid,
+            ServerDenyReasonInvalidUsername,
+            ServerDenyReasonInvalidPassword,
+            ServerDenyReasonUnknown,
+            ServerDenyInterpretationUnknown,
+            UserLoginSucceeded,
+            UserLoginFailed
+        }
+
+        public sealed class Credentials
         {
             private string _username;
             private string _password;
@@ -31,14 +46,29 @@ namespace Backend
             public string Username { get => _username; set => _username = value; }
             public string Password { get => _password; set => _password = value; }
             public string AuthToken { get => _authToken; set => _authToken = value; }
+            public bool Filled 
+            { 
+                get
+                {
+                    return !(string.IsNullOrEmpty(_username) || string.IsNullOrEmpty(_password) || string.IsNullOrEmpty(_authToken));
+                }
+            }
 
-            public UserCredentials()
+            public bool CredentialsFilled
+            {
+                get
+                {
+                    return !(string.IsNullOrEmpty(_username) || string.IsNullOrEmpty(_password));
+                }
+            }
+
+            public Credentials()
             {
                 _username = string.Empty;
                 _password = string.Empty;
                 _authToken = string.Empty;
             }
-            public UserCredentials(string username, string password, string authToken)
+            public Credentials(string username, string password, string authToken)
             {
                 _username = username;
                 _password = password;
@@ -59,9 +89,18 @@ namespace Backend
         private bool _connected;
 
         // Storing user credentials (loaded or new registration)
-        private UserCredentials _usrCredentials;
+        private Credentials _usrCredentials;
 
         public bool IsConnected { get => _connected; }
+        public Credentials UserCredentials
+        {
+            get => _usrCredentials;
+            set
+            {
+                if (value.CredentialsFilled)
+                    _usrCredentials = value;
+            }
+        }
 
         public Client()
         {
@@ -71,7 +110,7 @@ namespace Backend
             _ctSource.CancelAfter(TimeSpan.FromSeconds(60));
             _connected = false;
             // TODO - import if the user is already registered
-            _usrCredentials = new UserCredentials();
+            _usrCredentials = new Credentials();
         }
 
         public async Task ConnectToServer()
@@ -152,7 +191,7 @@ namespace Backend
                     case Flare.RegisterResponse.Types.RegisterDenyReason.RdrUnknown:
                         return RegistrationResponse.ServerDenyReasonUnknown;
                     default:
-                        return RegistrationResponse.ServerDenyReasonUnknown;
+                        return RegistrationResponse.ServerDenyInterpretationUnknown;
                 }
             }
 
@@ -164,9 +203,64 @@ namespace Backend
                 return RegistrationResponse.NewUserRegistrationSucceeded;
             }
 
-            return RegistrationResponse.UnknownErrorOccurred;
+            return RegistrationResponse.NewUserRegistrationFailed;
         }
 
+        public async Task<LoginResponse> LoginToServer()
+        {
+            if (!_usrCredentials.CredentialsFilled)
+                return LoginResponse.UserCredentialsNotSet;
 
+            var loginRequest = new Flare.LoginRequest();
+            loginRequest.Username = _usrCredentials.Username;
+            loginRequest.Password = _usrCredentials.Password;
+
+            var clientMessage = new Flare.ClientMessage();
+            clientMessage.LoginRequest = loginRequest;
+            byte[] buffer = clientMessage.ToByteArray();
+            const bool END_OF_MESSAGE = true;
+
+            await _webSocket.SendAsync(buffer, WebSocketMessageType.Binary, END_OF_MESSAGE, _ctSource.Token);
+
+            const int KILOBYTE = 1024;
+            const int OFFSET = 0;
+            buffer = new byte[KILOBYTE];
+
+            var response = await _webSocket.ReceiveAsync(buffer, _ctSource.Token);
+
+            int responseByteCount = response.Count;
+            if (responseByteCount > KILOBYTE)
+                return LoginResponse.FailedToGetServerLoginResponse;
+
+            var serverMessage = Flare.ServerMessage.Parser.ParseFrom(buffer, OFFSET, responseByteCount);
+            
+            if (serverMessage.ServerMessageTypeCase != Flare.ServerMessage.ServerMessageTypeOneofCase.LoginResponse)
+                return LoginResponse.ServerLoginResponseInvalid;
+
+            Flare.LoginResponse loginResponse = serverMessage.LoginResponse;
+
+            if (loginResponse.HasDenyReason)
+            {
+                switch (loginResponse.DenyReason)
+                {
+                    case Flare.LoginResponse.Types.LoginDenyReason.LdrUsernameInvalid:
+                        return LoginResponse.ServerDenyReasonInvalidUsername;
+                    case Flare.LoginResponse.Types.LoginDenyReason.LdrPasswordInvalid:
+                        return LoginResponse.ServerDenyReasonInvalidPassword;
+                    case Flare.LoginResponse.Types.LoginDenyReason.LdrUnknown:
+                        return LoginResponse.ServerDenyReasonUnknown;
+                    default:
+                        return LoginResponse.ServerDenyInterpretationUnknown;
+                }
+            }
+
+            if (loginResponse.HasAuthToken)
+            {
+                _usrCredentials.AuthToken = loginResponse.AuthToken;
+                return LoginResponse.UserLoginSucceeded;
+            }
+
+            return LoginResponse.UserLoginFailed;
+        }
     }
 }

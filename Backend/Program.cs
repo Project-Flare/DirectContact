@@ -42,12 +42,20 @@ namespace Backend
             await client.ConnectToServer();
             Console.WriteLine($"Connection established = {client.IsConnected}");
 
-            var userRegistration = new UserRegistration();
+            /*var userRegistration = new UserRegistration();
             userRegistration.Username = "pagarbiai_vacius_jusas_0";
             userRegistration.Password = ";IFlLyeOKBa|vJ.';vL56Z'$Ji'6&P";
 
-            var response = await client.RegisterToServer(userRegistration);
-            Console.WriteLine(response);
+            var response = await client.RegisterToServer(userRegistration);*/
+
+            Client.Credentials userCredentials = new Client.Credentials();
+            userCredentials.Username = "pagarbiai_vacius_jusas_0";
+            userCredentials.Password = ";IFlLyeOKBa|vJ.';vL56Z'$Ji'6&P";
+            client.UserCredentials = userCredentials;
+
+            var loginResponse = await client.LoginToServer();
+            Console.WriteLine(loginResponse);
+            Console.WriteLine(client.UserCredentials.AuthToken);
         }
     }
 }
