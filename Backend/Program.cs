@@ -46,16 +46,21 @@ namespace Backend
             userRegistration.Username = "pagarbiai_vacius_jusas_0";
             userRegistration.Password = ";IFlLyeOKBa|vJ.';vL56Z'$Ji'6&P";
 
-            var response = await client.RegisterToServer(userRegistration);*/
+            var registerResponse = await client.RegisterToServer(userRegistration);
+            Console.WriteLine(registerResponse);*/
 
             Client.Credentials userCredentials = new Client.Credentials();
             userCredentials.Username = "pagarbiai_vacius_jusas_0";
             userCredentials.Password = ";IFlLyeOKBa|vJ.';vL56Z'$Ji'6&P";
+            userCredentials.AuthToken = "ZSVMDyKeAAwbjHUsozdAuWM0Y+eCIwnKC8kqN45RL1oZUsoLJB0+WKIL/+PVJ2q/YYTwjDnE5hwJbFdmZ8RF88iWvezIUBm5DBrDMM8smWqKPIdudjLHITNpTt7By2iBhKldOH7CQHeLyzlRKSLtbrh2KYnF6bTlsBkj46BjqdY46JWdoEVgR+B0baFudvGVJVPQqdjHXA==|jDa4+TzcrMyPyqW0";
             client.UserCredentials = userCredentials;
-
-            var loginResponse = await client.LoginToServer();
-            Console.WriteLine(loginResponse);
             Console.WriteLine(client.UserCredentials.AuthToken);
+            //var loginResponse = await client.LoginToServer();
+            var authResponse = await client.TryAuthNewSession();
+            Console.WriteLine(authResponse);
+            Console.WriteLine(client.UserCredentials.AuthToken);
+
+            await client.FillUserList();
         }
     }
 }
