@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package flare;
+
+// Message type: client to server
+
+// Denotes the request to register a new user to the server
+
+// username: alphanumeric ASCII string in agreeance with pattern [A-Za-z_0-9]{1,32}
+// password: ASCII or Unicode string, considered by zxcvbn to meet a criteria of guesses.log2() >= 50.0
+
+// See: RegisterResult
+
+message RegisterRequest {
+    string username = 1;
+    string password = 2;
+}

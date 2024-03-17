@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package flare;
+
+// Message type: client to server
+
+// Currently unused
+
+message ChallengeResponse {
+    string request_id = 1;
+    string preimage = 2;
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package flare;
+
+// Message type: server to client
+
+// Denotes the closing message for the authentication exchange
+// See: AuthRequest
+
+// AR_OK:               Session is now authenticated, the client is free to send user-dependent protocol requests
+// AR_SESSION_INVALID:  The session is invalid, which MAY be due to an expired timestamp, or shuffled credentials
+// AR_UNKNOWN:          Unexpected server error
+
+// A new session key with an extended (refreshed) lifetime MAY be provided through new_session_key ONLY IF the result is AUTH_OK
+
+message AuthResponse {
+    enum AuthResult {
+        AR_OK = 0;
+        AR_SESSION_INVALID = 1;
+        AR_UNKNOWN = 2;
+        AR_SESSION_EXPIRED = 3;
+    }
+    AuthResult result = 1;
+    optional string new_auth_token = 2;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package flare;
+
+// Message type: server to client
+
+// Currently unused
+
+message ChallengeVerdict {
+    enum Verdict {
+        V_OK = 0;
+        V_DENY = 1;
+    }
+    string request_id = 1;
+    Verdict verdict = 2;
+}

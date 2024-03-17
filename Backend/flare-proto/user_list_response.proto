@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package flare;
+
+import "user.proto";
+
+// Message type: server to client
+// Denotes the response to a client's user list request, containing a list of all users registered on the server
+// See: UserListRequest
+
+message UserListResponse {
+    repeated User users = 1;
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package flare;
+
+// Message type: client to server
+
+// Denotes the initiation of a per-WebSocket-connection exchange, where the client authenticates their user identity through a previously-exchanged session token
+// See: LoginRequest, LoginResponse
+
+// The server shall accept or deny this request. A renewed token may be provided.
+// See: AuthResponse
+
+// <WebSocket connection, unauthenticated>
+// CLIENT: auth_request(session_token)
+// SERVER: auth_response(result::AUTH_OK, new_session_key?)
+// <WebSocket connection, authenticated>
+// CLIENT: ...
+
+message AuthRequest {
+    string session_token = 1;
+}

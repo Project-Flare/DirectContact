@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package flare;
+
+// Message type: server to client
+
+// Denotes the exchange where the client submits credentials to receive a semi-permanent session token
+// This session token is then used to authenticate each WebSocket connection through the AuthRequest message type
+// See: AuthRequest, AuthResponse, RegisterRequest, RegisterResponse
+
+message LoginResponse {
+    enum LoginDenyReason {
+        LDR_USERNAME_INVALID = 0;
+        LDR_PASSWORD_INVALID = 1;
+        LDR_UNKNOWN = 2;
+    }
+    oneof login_result {
+        string auth_token = 1;
+        LoginDenyReason deny_reason = 2;
+    }
+}
