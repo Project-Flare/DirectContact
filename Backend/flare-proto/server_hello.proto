@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package flare;
+
+// Denotes the server's greeting message on a WebSocket connection opening
+// The version string may be used to version the system protocol's version/compatibility
+
+message ServerHello {
+    string version = 1;
+}

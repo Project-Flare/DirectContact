@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package flare;
+
+import "challenge_response.proto";
+import "register_request.proto";
+import "auth_request.proto";
+import "login_request.proto";
+import "user_list_request.proto";
+
+// Base message originating from the client, outbound to the server
+// Wraps all possible client to server messages
+
+message ClientMessage {
+    oneof client_message_type {
+        flare.RegisterRequest register_request = 1;
+        flare.AuthRequest auth_request = 2;
+        flare.LoginRequest login_request = 3;
+        flare.ChallengeResponse challenge_response = 4;
+        flare.UserListRequest user_list_request = 5;
+    }
+}

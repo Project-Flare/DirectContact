@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package flare;
+
+// Message type: server to client
+
+// Denotes the result of handling a client's registration request
+// See: RegisterRequest
+
+// RDR_USERNAME_TAKEN:              A user already exists with the requested name
+// RDR_USERNAME_INVALID_SYMBOLS:    The username is not of alphanumeric nature ([A-Za-z_0-9]), or contains non-ASCII characters, whitespace
+// RDR_USERNAME_INVALID_LENGTH:     The username's length is not in bounds of [1;32]
+// RDR_PASSWORD_BLANK:              The password string is empty
+// RDR_PASSWORD_WEAK:               The password does not meet server-enforced entropy requirements (guesses.log2() >= 50.0)
+// RDR_UNKNOWN:                     Unexpected server error
+
+// auth_token: encrypted blob, proof of user's identity, with a specific lifetime
+// See: AuthRequest
+
+message RegisterResponse {
+    enum RegisterDenyReason {
+        RDR_USERNAME_TAKEN = 0;
+        RDR_USERNAME_INVALID_SYMBOLS = 1;
+        RDR_USERNAME_INVALID_LENGTH = 2;
+        
+        RDR_PASSWORD_BLANK = 3;
+        RDR_PASSWORD_WEAK = 4;
+        RDR_UNKNOWN = 5;
+    }
+    oneof register_result {
+        string auth_token = 1;
+        RegisterDenyReason deny_reason = 2;
+    }
+}

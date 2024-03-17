@@ -18,7 +18,7 @@ namespace DirectContactClient
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
-
+            Console.WriteLine("Hello there!");
             return builder.Build();
         }
     }
