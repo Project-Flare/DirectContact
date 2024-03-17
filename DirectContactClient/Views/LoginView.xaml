@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DirectContactClient.Views.LoginView"
+             Title="LoginView"
+             xmlns:control="clr-namespace:DirectContactClient.Control"
+             >
+    <Grid BackgroundColor="#4B8C69">
+        <AbsoluteLayout>
+            <Ellipse WidthRequest="280" HeightRequest="280"
+             Fill="#3FA970"
+             AbsoluteLayout.LayoutBounds="0.27, 0.24, 0, 0"
+             AbsoluteLayout.LayoutFlags="PositionProportional"/>
+            <Ellipse WidthRequest="640" HeightRequest="640"
+             Fill="#40604E"
+             AbsoluteLayout.LayoutBounds="0.91, 0.89, 0, 0"
+             AbsoluteLayout.LayoutFlags="PositionProportional"/>
+            <Ellipse WidthRequest="490" HeightRequest="490"
+             Fill="#415532"
+             AbsoluteLayout.LayoutBounds=" .825, .95, 0, 0"
+             AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        </AbsoluteLayout>
+        <Grid RowDefinitions="150, 500">
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Swiped="NavigateToRegister_Clicked" Direction="Right"/>
+            </Grid.GestureRecognizers>
+            <Grid Grid.Row="0">
+
+                <Label Text="Log in"
+                   FontSize="32"
+                   TextColor="#FFFFFF"
+                   FontFamily="InterExtraBold"
+                   Margin="20,0,0,0"
+                       VerticalOptions="End"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid
+                      HeightRequest="320"
+                    WidthRequest="375"
+                    MaximumWidthRequest="1000"
+                    VerticalOptions="Start"
+                      Opacity=".7">
+                    <RoundRectangle
+                        Fill="#FFFFFF"
+                        CornerRadius="30,30,30,30"/>
+                    <Grid Margin="15,20,15,0" RowDefinitions="*,*,*,*">
+                        <RoundRectangle Fill="White"/>
+                        <Grid Margin="0,0,0,0" Grid.Row="0" HeightRequest="55">
+                            <Frame Padding="0" BackgroundColor="#8A8888" CornerRadius="12">
+                                <control:CustomEntry Placeholder="username"
+                                   FontFamily="InterExtraBold"
+                                   FontSize="18"
+                                   VerticalOptions="Center"
+                                   Margin="5,0,5,0"/>
+                            </Frame>
+                        </Grid>
+                        <Grid Margin="0,20,0,0" Grid.Row="1">
+                            <Frame Padding="0" BackgroundColor="#8A8888" CornerRadius="12" HeightRequest="55">
+                                <control:CustomEntry Placeholder="password"
+                                   FontFamily="InterExtraBold"
+                                   FontSize="18"
+                                   VerticalOptions="Center"
+                                   Margin="5,0,5,0"
+                                   IsPassword="True"/>
+                            </Frame>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Button Text="Log in"
+                                Clicked="LoginButton_Clicked"
+                                FontFamily="InterExtraBold"
+                                FontSize="18"
+                                BackgroundColor="#373636"
+                                HeightRequest="35"
+                                Margin="0,60,0,0"
+                                Padding="0"/>
+                        </Grid>
+                        <Grid Grid.Row="3">
+                            <Label HorizontalTextAlignment="Center"
+                               Margin="0,12,0,0">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Don't have an account? "
+                                          FontFamily="InterExtraBold"
+                                          TextColor="#000000"/>
+                                        <Span Text="Sign up"
+                                          FontFamily="InterExtraBold"
+                                          TextColor="#6B80CB">
+                                            <Span.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="NavigateToRegister_Clicked"/>
+                                            </Span.GestureRecognizers>
+                                        </Span>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

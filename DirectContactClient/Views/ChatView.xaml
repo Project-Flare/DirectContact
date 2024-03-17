@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DirectContactClient.Views.ChatView"
+             Title="ChatView">
+    <Grid>
+        <Grid RowDefinitions="80, *, 90">
+            <Grid RowDefinitions="60, *"
+              BackgroundColor="#2B5B58">
+                <Grid Margin="20,10,0,0">
+                    <Label Text="Users"
+                   TextColor="#FFFFFF"
+                   FontFamily="InterExtraBold"
+                   FontSize="32"
+                   AnchorY="0"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1"
+                  BackgroundColor="#4B8C69">
+                <ScrollView x:Name="scrollView" HorizontalScrollBarVisibility="Never">
+                    <VerticalStackLayout 
+                        VerticalOptions="End">
+                    </VerticalStackLayout>
+                </ScrollView>
+
+            </Grid>
+            <Grid Grid.Row="2"
+                  BackgroundColor="#4B8C69"
+                  ColumnDefinitions="*,.15*">
+                <Grid Grid.Column="0"
+                      Opacity=".7"
+                      Padding="20,0,10,20"
+                      VerticalOptions="End"
+                      >
+                    <Frame Padding="0" 
+                           BackgroundColor="#8A8888"
+                           BorderColor="Transparent" 
+                           CornerRadius="12"
+                           HeightRequest="45">
+                        <Entry Placeholder="message"
+                                   FontFamily="InterExtraBold"
+                                   FontSize="18"
+                                   VerticalOptions="CenterAndExpand"
+                                   Margin="10,0,10,0"
+                                   PlaceholderColor="#FFFFFF"
+                                   Opacity=".7"
+                                   TextColor="#FFFFFF"/>
+                    </Frame>
+                </Grid>
+                <Grid Grid.Column="1"
+                      Padding="0,10,0,10">
+                    <Button BackgroundColor="Transparent"
+                            FontFamily="InterExtraBold"
+                            FontSize="30"
+                            HorizontalOptions="Start"
+                            Text="->"/>
+
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
