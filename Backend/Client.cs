@@ -117,11 +117,11 @@ namespace Backend
         private Credentials _usrCredentials;
         
         // Message buffer
-        private const int BUFFER_SIZE_BYTES = 4;
-        private byte[] buffer = new byte[BUFFER_SIZE_BYTES];
+        private const int KILOBYTE = 1024;
+        private byte[] _buffer = new byte[KILOBYTE];
 
         // List of all users of the DC
-        private List<string> _userList;
+        public List<string> UserList { get; private set; }
 
         public bool IsConnected { get => _connected; }
         public Credentials UserCredentials
@@ -143,31 +143,16 @@ namespace Backend
             _connected = false;
             // TODO - import if the user is already registered
             _usrCredentials = new Credentials();
-            _userList = new List<string>();
+            UserList = new List<string>();
         }
 
         public async Task ConnectToServer()
         {
-            // Connect to server
             await _webSocket.ConnectAsync(new Uri(_serverUrl), _ctSource.Token);
 
-            // 1KB buffer
-            const int ONE_KILOBYTE = 1024;
-            byte[] buffer = new byte[ONE_KILOBYTE];
+            ServerMessage serverMessage = await ReceiveServerMessageAsync();
 
-            // Get server response
-            WebSocketReceiveResult rs = await _webSocket.ReceiveAsync(buffer, _ctSource.Token);
-
-            // Check if received message bytes do not exceed the size of the buffer
-            int BYTES_RECEIVED = rs.Count;
-            if (BYTES_RECEIVED > ONE_KILOBYTE)
-                return;
-
-            // Start decoding message from the buffers start
-            const int OFFSET = 0;
-            // Check if the server response is greeting
-            Flare.ServerMessage response = Flare.ServerMessage.Parser.ParseFrom(buffer, OFFSET, BYTES_RECEIVED);
-            _connected = response.ServerMessageTypeCase.Equals(Flare.ServerMessage.ServerMessageTypeOneofCase.Hello);
+            _connected = serverMessage.ServerMessageTypeCase.Equals(Flare.ServerMessage.ServerMessageTypeOneofCase.Hello);
         }
 
         public async Task<RegistrationResponse> RegisterToServer(UserRegistration registration)
@@ -186,21 +171,10 @@ namespace Backend
             // Send request to server
             var clientMessage = new Flare.ClientMessage();
             clientMessage.RegisterRequest = registerRequest;
-            byte[] buffer = clientMessage.ToByteArray();
-            const bool END_OF_MESSAGE = true;
-            await _webSocket.SendAsync(buffer, WebSocketMessageType.Binary, END_OF_MESSAGE, _ctSource.Token);
+            await SendClientMessageAsync(clientMessage, true);
 
             // Get server response
-            const int KILOBYTE = 1024;
-            const int OFFSET = 0;
-            buffer = new byte[KILOBYTE];
-
-            WebSocketReceiveResult rs = await _webSocket.ReceiveAsync(buffer, _ctSource.Token);
-            int BYTES_RECEIVED = rs.Count;
-            if (BYTES_RECEIVED > KILOBYTE)
-                return RegistrationResponse.FailedToGetServerResponse;
-
-            Flare.ServerMessage serverMessage = Flare.ServerMessage.Parser.ParseFrom(buffer, OFFSET, BYTES_RECEIVED);
+            Flare.ServerMessage serverMessage = await ReceiveServerMessageAsync();
 
             if (serverMessage.ServerMessageTypeCase != Flare.ServerMessage.ServerMessageTypeOneofCase.RegisterResponse)
                 return RegistrationResponse.ServerRegisterResponseInvalid;
@@ -250,22 +224,9 @@ namespace Backend
 
             var clientMessage = new Flare.ClientMessage();
             clientMessage.LoginRequest = loginRequest;
-            byte[] buffer = clientMessage.ToByteArray();
-            const bool END_OF_MESSAGE = true;
+            await SendClientMessageAsync(clientMessage, true);
 
-            await _webSocket.SendAsync(buffer, WebSocketMessageType.Binary, END_OF_MESSAGE, _ctSource.Token);
-
-            const int KILOBYTE = 1024;
-            const int OFFSET = 0;
-            buffer = new byte[KILOBYTE];
-
-            var response = await _webSocket.ReceiveAsync(buffer, _ctSource.Token);
-
-            int responseByteCount = response.Count;
-            if (responseByteCount > KILOBYTE)
-                return LoginResponse.FailedToGetServerLoginResponse;
-
-            var serverMessage = Flare.ServerMessage.Parser.ParseFrom(buffer, OFFSET, responseByteCount);
+            ServerMessage serverMessage = await ReceiveServerMessageAsync();
             
             if (serverMessage.ServerMessageTypeCase != Flare.ServerMessage.ServerMessageTypeOneofCase.LoginResponse)
                 return LoginResponse.ServerLoginResponseInvalid;
@@ -307,23 +268,9 @@ namespace Backend
             var clientMessage = new Flare.ClientMessage();
             clientMessage.AuthRequest = authRequest;
 
-            byte[] buffer = clientMessage.ToByteArray();
-            const bool END_OF_MESSAGE = true;
+            await SendClientMessageAsync(clientMessage, true);
 
-            await _webSocket.SendAsync(buffer, WebSocketMessageType.Binary, END_OF_MESSAGE, _ctSource.Token);
-
-            const int KILOBYTE = 1024;
-            const int OFFSET = 0;
-            buffer = new byte[KILOBYTE];
-
-            WebSocketReceiveResult response = await _webSocket.ReceiveAsync(buffer, _ctSource.Token);
-
-            int BYTES_RECEIVED = response.Count;
-
-            if (BYTES_RECEIVED > KILOBYTE)
-                return AuthenticationResponse.FailedToGetServerAuthResponse;
-
-            Flare.ServerMessage serverMessage = Flare.ServerMessage.Parser.ParseFrom(buffer, OFFSET, BYTES_RECEIVED);
+            Flare.ServerMessage serverMessage = await ReceiveServerMessageAsync();
 
             if (serverMessage.ServerMessageTypeCase != Flare.ServerMessage.ServerMessageTypeOneofCase.AuthResponse)
                 return AuthenticationResponse.ServerAuthResponseInvalid;
@@ -378,7 +325,7 @@ namespace Backend
             var userList = serverMessage.UserListResponse;
 
             foreach (var user in userList.Users)
-                _userList.Append(user.Username);
+                UserList.Add(user.Username);
 
             return UserListResponse.UserListIsFilledSuccessfully;
         }
@@ -390,10 +337,10 @@ namespace Backend
                 return false;
 
             // Convert given message to byte array in protobuf encoding
-            byte[] buffer = message.ToByteArray();
+            _buffer = message.ToByteArray();
 
             // Send protobuf byte array through the web socket
-            await _webSocket.SendAsync(buffer, WebSocketMessageType.Binary, endOfMessage, _ctSource.Token);
+            await _webSocket.SendAsync(_buffer, WebSocketMessageType.Binary, endOfMessage, _ctSource.Token);
 
             // Message sent successfully
             return true;
@@ -401,12 +348,13 @@ namespace Backend
 
         private async Task<ServerMessage> ReceiveServerMessageAsync()
         {
+            _buffer = new byte[KILOBYTE];
             int offset = 0;
-            int free = buffer.Length;
+            int free = _buffer.Length;
 
             while(true)
             {
-                var response = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, offset, free), _ctSource.Token);
+                var response = await _webSocket.ReceiveAsync(new ArraySegment<byte>(_buffer, offset, free), _ctSource.Token);
 
                 if (response.EndOfMessage)
                 {
@@ -417,22 +365,22 @@ namespace Backend
                 // Enlarge if the received message is bigger than the buffer
                 if (free.Equals(response.Count))
                 {
-                    int newSize = buffer.Length * 2;
+                    int newSize = _buffer.Length * 2;
 
                     if (newSize > 2_000_000)
                         break;
 
                     byte[] newBuffer = new byte[newSize];
-                    Array.Copy(buffer, 0, newBuffer, 0, buffer.Length);
+                    Array.Copy(_buffer, 0, newBuffer, 0, _buffer.Length);
 
-                    free = newBuffer.Length - buffer.Length;
-                    offset = buffer.Length;
-                    buffer = newBuffer;
+                    free = newBuffer.Length - _buffer.Length;
+                    offset = _buffer.Length;
+                    _buffer = newBuffer;
                 }
 
             }
 
-            return ServerMessage.Parser.ParseFrom(buffer, 0, offset);
+            return ServerMessage.Parser.ParseFrom(_buffer, 0, offset);
         }
     }
 }
