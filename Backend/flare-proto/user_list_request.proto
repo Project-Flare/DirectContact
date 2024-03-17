@@ -2,4 +2,9 @@ syntax = "proto3";
 
 package flare;
 
-message UserListRequest { }
+// Message type: client to server
+
+// Denotes the request to view a list of all users registered on the server
+// See: UserListResponse 
+
+message UserListRequest { };

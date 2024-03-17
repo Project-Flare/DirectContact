@@ -68,7 +68,7 @@ namespace Backend
                 }
             }
         }
-        public bool Valid
+        public bool IsValid
         {
             get
             {

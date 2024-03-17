@@ -1,8 +1,8 @@
 ﻿using System.Net.WebSockets;
-using Flare;
 using Google.Protobuf;
 using static Flare.RegisterResponse;
 using static Flare.ServerMessage;
+using Flare;
  
 namespace Backend
 {
@@ -11,89 +11,43 @@ namespace Backend
         static async Task Main(string[] args)
         {
 
-            using (var client = new Client())
+            /*using (var ws = new ClientWebSocket())
             {
-                // Specify server url
-                client.ServerUrl = "wss://ws.project-flare.net/";
-
-                // Specify the longest possible time you want to wait for the service
-                // So if the response from the server is longer than 20 seconds, System.Threading.Tasks.TaskCanceledException is thrown
-                client.CancelProcessAfterSeconds = 20;
-
-                await client.ConnectToServer();
-
-                if (!client.ConnectedToServer)
-                {
-                    Console.WriteLine("Failed to connect to server...");
-                    return;
-                }
-
-                // User credentials
-                const string USERNAME = "airidas_vengrauskas_2008";
-                const string PASSWORD = "n6Ct4C{!\\\"H9--_{[{A\"/w2RkQz?8`i4}@";
+                byte[] buffer = new byte[1024];
+                await ws.ConnectAsync(new Uri("wss://ws.project-flare.net/"), CancellationToken.None);
+                var serverResponse = await ws.ReceiveAsync(buffer, CancellationToken.None);
 
 
-                //////////////////////// LOG IN TO SERVER
-                /*client.Credentials = new ClientCredentials(USERNAME, PASSWORD);
-                Console.WriteLine(client.Credentials.ToString());
+               *//* RegisterRequest registrationRequest = new RegisterRequest();
+                registrationRequest.Username = "skibidi_toletai_24563";
+                registrationRequest.Password = "q}TeHBu(8y=jybKo_]-1eJqj=v1ZjTK";
+                ClientMessage clientMessage = new ClientMessage();
+                clientMessage.RegisterRequest = registrationRequest;*//*
+                LoginRequest loginRequest = new LoginRequest();
+                loginRequest.Username = "airidas_vengrauskas_2004";
+                loginRequest.Password = "n6Ct4C{!\\\"H9--_{[{A\"/w2RkQz?8`i4}@";
+                ClientMessage clientMessage = new ClientMessage();
+                clientMessage.LoginRequest = loginRequest;
+                buffer = clientMessage.ToByteArray();
+                await ws.SendAsync(buffer, WebSocketMessageType.Binary, true, CancellationToken.None);
+                buffer = new byte[1024];
+                Console.WriteLine("Sending the request");
+                serverResponse = await ws.ReceiveAsync(buffer, CancellationToken.None);
+                Console.WriteLine("Request received");
+                var serverMessage = ServerMessage.Parser.ParseFrom(buffer, 0, serverResponse.Count);
 
-                AuthenticationResponse authResponse = await client.LoginToServer();
+            }*/
 
-                if (authResponse.Equals(AuthenticationResponse.ClientAuthSuccess))
-                    Console.WriteLine("Login to clients account is successful: " + client.SessionKey);
-                else
-                    Console.WriteLine("Login to clients account failed because: " + authResponse);*/
+            var client = new Client();
+            await client.ConnectToServer();
+            Console.WriteLine($"Connection established = {client.IsConnected}");
 
-                //////////////////////// REGISTER TO SERVER
+            var userRegistration = new UserRegistration();
+            userRegistration.Username = "pagarbiai_vacius_jusas_0";
+            userRegistration.Password = ";IFlLyeOKBa|vJ.';vL56Z'$Ji'6&P";
 
-                UserRegistration registration = new UserRegistration();
-
-                registration.Username = USERNAME;
-
-                if (!registration.UsernameValid)
-                {
-                    Console.Write("Username is not valid because "
-                        + UserRegistration.ValidifyUsername(USERNAME));
-                    return;
-                }
-
-                registration.Password = PASSWORD;
-
-                if (!registration.PasswordValid)
-                {
-                    Console.WriteLine("Password is not valid because password is: "
-                        + UserRegistration.EvaluatePassword(PASSWORD));
-                    return;
-                }
-
-                if (!registration.Valid)
-                {
-                    Console.WriteLine("Filling registration form failed...");
-                    return;
-                }
-
-                RegistrationResponse serverResponse = await client.RegisterToServer(registration);
-
-                if (serverResponse.Equals(RegistrationResponse.SessionKeyIssueSuccessful))
-                {
-                    Console.WriteLine("User registration is successful");
-                }
-                else if (serverResponse.Equals(RegistrationResponse.SessionKeyIssueFailed))
-                {
-                    Console.WriteLine("Session key issue failed");
-                }
-                else
-                {
-                    Console.WriteLine("Failed to register new user because " + serverResponse);
-                }
-
-                await client.DisconnectFromServer();
-
-                if (!client.ConnectedToServer)
-                {
-                    Console.WriteLine("Session is over");
-                }
-            }
+            var response = await client.RegisterToServer(userRegistration);
+            Console.WriteLine(response);
         }
     }
 }
