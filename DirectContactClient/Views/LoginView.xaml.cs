@@ -24,6 +24,6 @@ public partial class LoginView : ContentPage
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-
+		//void
     }
 }

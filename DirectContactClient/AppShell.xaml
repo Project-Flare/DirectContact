@@ -22,6 +22,10 @@
         Title="MainView"
         ContentTemplate="{DataTemplate views:MainView}"
         Route="MainView" />
+    <ShellContent
+        Title="ExploreView"
+        ContentTemplate="{DataTemplate views:ExploreView}"
+        Route="ExploreView" />
 
 
 </Shell>
